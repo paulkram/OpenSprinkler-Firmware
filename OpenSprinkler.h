@@ -60,6 +60,10 @@
 	#include <netdb.h>
 	#include <sys/stat.h>
 	#include "etherport.h"
+
+	#if defined(LCDGFX)
+	#include "lcdgfx.h"
+	#endif
 #endif // end of headers
 
 #if defined(ARDUINO)
@@ -172,6 +176,9 @@ public:
 #elif defined(ARDUINO)
 	static LiquidCrystal lcd;   // 16x2 character LCD
 #else
+	#if defined(LCDGFX)
+	static DisplaySSD1306_128x64_I2C lcd; // 128x64 I2C OLED display
+	#endif
 	// todo: LCD define for RPI/BBB
 #endif
 

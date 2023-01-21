@@ -22,29 +22,45 @@ elif [ "$1" == "osbo" ]; then
 	g++ -o OpenSprinkler -DOSBO main.cpp OpenSprinkler.cpp program.cpp opensprinkler_server.cpp utils.cpp weather.cpp gpio.cpp etherport.cpp mqtt.cpp -lpthread -lmosquitto
 elif [ "$1" == "opipc" ]; then
 	echo "Installing required libraries..."
-	apt-get update
-	apt-get install -y libmosquitto-dev
-	echo "Downloading and installing wiringOP..."
-	if [ -d "wiringOP" ]; then
-  		echo "wiringOP folder exists, updating to latest master"
-		cd wiringOP
-		git checkout master
-		git pull
-	else
-		git clone https://github.com/orangepi-xunlong/wiringOP.git
-		cd wiringOP	    
-	fi
-	./build clean
-	./build 
-	cd ..
+	#apt-get update
+	#apt-get install -y libmosquitto-dev
+	#echo "Downloading and installing wiringOP..."
+	#if [ -d "wiringOP" ]; then
+  	#	echo "wiringOP folder exists, updating to latest master"
+	#	cd wiringOP
+	#	git checkout master
+    #	git pull
+	#else
+	#	git clone https://github.com/orangepi-xunlong/wiringOP.git
+	#	cd wiringOP	    
+	#fi
+	#./build clean
+	#./build 
+	#cd ..
 	echo "Done installing wiringOP"
 	if ! command -v gpio &> /dev/null
 	then
 		echo "Command gpio is required and is not installed"
 		exit 0
 	fi
+
+	if [ "$2" == "lcd" ]; then
+		echo "Building with LCD support"
+		display=\-DLCDGFX\ \-DDOXYGEN_SHOULD_SKIP_THIS
+		if [ ! -d "lcdgfx" ]; then
+		echo "Cloning LCDGFX library"
+		git clone --depth 1 https://github.com/lexus2k/lcdgfx.git
+		fi
+		echo "Building LCDGFX"
+		cd lcdgfx
+		make -j library
+		cd ..
+		ldisplay=\-I\ lcdgfx\/src\ -L\ lcdgfx\/bld\ \-llcdgfx
+		echo "done"
+	fi
+
 	echo "Compiling firmware..."
-	g++ -o OpenSprinkler -DOSOPI -std=c++14 main.cpp OpenSprinkler.cpp program.cpp opensprinkler_server.cpp utils.cpp weather.cpp gpio.cpp etherport.cpp mqtt.cpp -lpthread -lmosquitto
+	g++ --verbose -std=c++14 -o OpenSprinkler -DOSOPI $display main.cpp OpenSprinkler.cpp program.cpp opensprinkler_server.cpp utils.cpp weather.cpp gpio.cpp etherport.cpp mqtt.cpp -lpthread -lmosquitto $ldisplay
 
 else
 	echo "Installing required libraries..."
