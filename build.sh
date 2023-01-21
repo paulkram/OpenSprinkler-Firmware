@@ -57,11 +57,12 @@ elif [ "$1" == "opipc" ]; then
 		make -j SSD1306
 		cd ..
 		ldisplay=\-I\ libSSD1306\/lib\ -L\ libSSD1306\/lib\ \-lSSD1306
+		odisplay=SSD1306DisplayAdapter.cpp\ 
 		echo "done"
 	fi
 
 	echo "Compiling firmware..."
-	g++ --verbose -std=c++14 -o OpenSprinkler -DOSOPI $display main.cpp OpenSprinkler.cpp program.cpp opensprinkler_server.cpp utils.cpp weather.cpp gpio.cpp etherport.cpp mqtt.cpp -lpthread -lmosquitto $ldisplay
+	g++ -std=c++14 -o OpenSprinkler -DOSOPI $display main.cpp OpenSprinkler.cpp program.cpp opensprinkler_server.cpp utils.cpp weather.cpp gpio.cpp etherport.cpp mqtt.cpp $odisplay -lpthread -lmosquitto $ldisplay
 
 else
 	echo "Installing required libraries..."

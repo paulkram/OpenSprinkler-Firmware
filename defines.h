@@ -418,7 +418,13 @@ enum {
 	//#define PIN_BUTTON_2      24    // button 2
 	//#define PIN_BUTTON_3      25    // button 3
 
+	#if defined(LIBSSD1306)
+	#define SSD1306I2C			"/dev/i2c0"
 	#define PIN_FREE_LIST       {5,6,7,8,9,10,11,12,13,16,18,19,20,21,23,24,25,26}  // free GPIO pins
+	#else
+	#define PIN_FREE_LIST       {5,6,7,8,9,10,11,12,13,16,18,19,20,21,23,24,25,26}  // free GPIO pins
+	#endif
+
 	#define ETHER_BUFFER_SIZE   16384
 
 #elif defined(OSOPI) // for OSPi on OrangePi
@@ -436,7 +442,13 @@ enum {
 	//#define PIN_BUTTON_2      24    // button 2
 	//#define PIN_BUTTON_3      25    // button 3
 
+	#if defined(LIBSSD1306)
+	#define SSD1306I2C			"/dev/i2c1"
+	#define PIN_FREE_LIST       {2,7,8,9,10,11,12,20,21,64,65,66,67,71,110,198,200,201}  // free GPIO pins
+	#else
 	#define PIN_FREE_LIST       {2,7,8,9,10,11,12,18,19,20,21,64,65,66,67,71,110,198,200,201}  // free GPIO pins
+	#endif
+
 	#define ETHER_BUFFER_SIZE   16384
 
 #elif defined(OSBO) // for OSBo

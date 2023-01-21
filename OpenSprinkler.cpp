@@ -96,6 +96,9 @@ extern ProgramData pd;
 	#if defined(OSPI) || defined(OSOPI)
 		byte OpenSprinkler::pin_sr_data = PIN_SR_DATA;
 	#endif
+	#if defined(SSD1306)
+	OpenSprinkler::lcd(SSD1306I2C, 0x3C);
+	#endif
 	// todo future: LCD define for Linux-based systems
 #endif
 
@@ -677,7 +680,7 @@ void OpenSprinkler::update_dev() {
 /** Initialize LCD */
 void OpenSprinkler::lcd_start() {
 
-#if defined(ESP8266)
+#if defined(ESP8266) || (defined(OSOPI) && defined(LIBSSD1306))
 	// initialize SSD1306
 	lcd.init();
 	lcd.begin();

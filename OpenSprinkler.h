@@ -62,7 +62,7 @@
 	#include "etherport.h"
 
 	#if defined(LIBSSD1306)
-	#include "OledI2C.h"
+	#include "SSD1306DisplayAdapter.h"
 	#endif
 #endif // end of headers
 
@@ -176,8 +176,8 @@ public:
 #elif defined(ARDUINO)
 	static LiquidCrystal lcd;   // 16x2 character LCD
 #else
-	#if defined(LCDGFX)
-	static DisplaySSD1306_128x64_I2C lcd; // 128x64 I2C OLED display
+	#if defined(LIBSSD1306)
+	static SSD1306DisplayAdapter lcd; // 128x64 I2C OLED display
 	#endif
 	// todo: LCD define for RPI/BBB
 #endif
