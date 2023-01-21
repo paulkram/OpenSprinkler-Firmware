@@ -23,7 +23,7 @@ elif [ "$1" == "osbo" ]; then
 elif [ "$1" == "opipc" ]; then
 	echo "Installing required libraries..."
 	#apt-get update
-	#apt-get install -y libmosquitto-dev
+	#apt-get install -y libmosquitto-dev cmake
 	#echo "Downloading and installing wiringOP..."
 	#if [ -d "wiringOP" ]; then
   	#	echo "wiringOP folder exists, updating to latest master"
@@ -46,16 +46,17 @@ elif [ "$1" == "opipc" ]; then
 
 	if [ "$2" == "lcd" ]; then
 		echo "Building with LCD support"
-		display=\-DLCDGFX\ \-DDOXYGEN_SHOULD_SKIP_THIS
+		display=\-DLIBSSD1306
 		if [ ! -d "lcdgfx" ]; then
-		echo "Cloning LCDGFX library"
-		git clone --depth 1 https://github.com/lexus2k/lcdgfx.git
+		echo "Cloning libSSD1306 library"
+		git clone --depth 1 https://github.com/AndrewFromMelbourne/libSSD1306.git
 		fi
-		echo "Building LCDGFX"
-		cd lcdgfx
-		make -j library
+		echo "Building libSSD1306"
+		cd libSSD1306
+		cmake .
+		make -j SSD1306
 		cd ..
-		ldisplay=\-I\ lcdgfx\/src\ -L\ lcdgfx\/bld\ \-llcdgfx
+		ldisplay=\-I\ libSSD1306\/lib\ -L\ libSSD1306\/lib\ \-lSSD1306
 		echo "done"
 	fi
 

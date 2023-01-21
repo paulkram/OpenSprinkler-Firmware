@@ -61,8 +61,8 @@
 	#include <sys/stat.h>
 	#include "etherport.h"
 
-	#if defined(LCDGFX)
-	#include "lcdgfx.h"
+	#if defined(LIBSSD1306)
+	#include "OledI2C.h"
 	#endif
 #endif // end of headers
 
